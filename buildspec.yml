@@ -1,0 +1,20 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - corepack enable
+      - corepack prepare pnpm@latest --activate
+  pre_build:
+    commands:
+      - pnpm install
+      - pnpm test -- --stage prod
+  build:
+    commands:
+      - pnpm sst deploy --stage prod
+cache:
+  paths:
+    - /codebuild/output/.pnpm-store/v3/**/*
+    - /codebuild/output/node_modules/**/*
+    - .next/cache/**/*
